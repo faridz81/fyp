@@ -73,6 +73,7 @@ def get_conversational_chain():
     Student name with the highest count row/json object of data log, got the highest attendance performance.
     Use date and time in easy readable format.
     Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
+    If suitable use table to show data.
 
     Context:\n {context}?\n
     Question: \n{question}\n
