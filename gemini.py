@@ -27,25 +27,9 @@ def get_text_chunks(data):
     # Convert list of dictionaries to a structured string with explanations for each key
     for entry in data:
         for key, value in entry.items():
-            if key == "id_kehadiran":
-                description = f"id_kehadiran: {value}. This key represents the unique attendance ID for the record."
-            elif key == "student_id":
-                description = f"student_id: {value}. This key represents the unique ID for each student in the record. Same student_id belongs to same person"
-            elif key == "student_name":
-                description = f"name: {value}. This key represents the full name of the student."
-            elif key == "class_name":
-                description = f"class_name: {value}. This key represents of the class name."
-            elif key == "no_matriks":
-                description = f"no_matriks: {value}. This key represents the student's matriculation number."
-            elif key == "nama_fakulti":
-                description = f"nama_fakulti: {value}. This key represents the name of the faculty the student is enrolled in."
-            elif key == "nama_course":
-                description = f"nama_course: {value}. This key represents the name of the course the student is taking."
-            elif key == "register_time":
-                description = f"register_time: {value}. This key represents the date and time when the student punched their attendance with timezone Asia/Kuala Lumpur (GMT +8)."
-            elif key == "lokasi_device":
-                description = f"lokasi_device: {value}. This key represents the location of the device used to register the attendance."
-            
+
+            elif
+                description = f"{key}: {value}."
             text += description + "\n"
     
     # Split the text into manageable chunks
@@ -66,7 +50,14 @@ def get_vector_store(chunks):
 
 def get_conversational_chain():
     prompt_template = """
-
+    You are a data assistant. Your task is to assist users in retrieving information from the provided JSON data.
+    Data is about attendance log of the student of my class. My class means that I am a lecturer. Each one json object contains one attendance of a student.
+    Count number of object with same student name, to count total attendance for each student.
+    IMPORTANT! You determine a class is distinct based on class_name. Do not use partial match for class name.
+    Use date and time in easy readable format.
+    Different punched date and time is consider different attendance, although student attend the same class name.
+    Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
+    DO not always use table. If data more than two column use table to show data.
 
     Context:\n {context}?\n
     Question: \n{question}\n
