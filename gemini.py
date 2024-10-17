@@ -61,7 +61,7 @@ def get_conversational_chain():
     Answer:
     """
 
-    model = ChatGoogleGenerativeAI(model="Text Embedding",
+    model = ChatGoogleGenerativeAI(model="gemini-1.5-flash-001",
                                    client=genai,
                                    temperature=0.1,
                                    top_k=10)
