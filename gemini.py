@@ -79,7 +79,8 @@ def get_conversational_chain():
     Student name with the highest count row/json object of data log, got the highest attendance performance.
     You determine a class is unique based on the combination of 'nama_subject'(class name) and 'info_kelas'(class section). Even though some classes share the same name, the different section make them distict.
     Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
-    Your goal is to provide accurate answers based on the context of the data, including partial name matching and identifying students with high attendance.
+    Your goal is to provide accurate answers based on the context of the data, including partial student name matching and identifying students with high attendance.
+    Do not use partial name matching for 'info_kelas'(class section).
 
     Context:\n {context}?\n
     Question: \n{question}\n
