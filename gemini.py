@@ -78,7 +78,7 @@ def get_conversational_chain():
     Data is about attendance log of the student of my class. My class means that I am a lecturer.
     Student name with the highest count row/json object of data log, got the highest attendance performance.
     Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
-    Use partial student name matching.
+    Use partial student name matching. Donot use partial class name matching.
 
     Context:\n {context}?\n
     Question: \n{question}\n
