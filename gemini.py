@@ -29,8 +29,14 @@ def get_text_chunks(data):
         for key, value in entry.items():
             if key == "id_kehadiran":
                 description = f"id_kehadiran: {value}. This key represents the unique attendance ID for the record."
+            elif key == "student_id":
+                description = f"student_id: {value}. This key represents the unique ID for each student in the record. Same student_id belongs to same person"
             elif key == "student_name":
                 description = f"name: {value}. This key represents the full name of the student."
+            elif key == "lecturer_name":
+                description = f"lecturerName: {value}. This key represents the full name of the class lecturer."
+            elif key == "class_id":
+                description = f"class_id: {value}. This key represents of the class ID. You determine a class is unique based on class_id"
             elif key == "nama_subject":
                 description = f"nama_subject: {value}. This key represents of the class name. "
             elif key == "info_kelas":
@@ -70,6 +76,9 @@ def get_conversational_chain():
     prompt_template = """
     You are a JSON data assistant. Your task is to assist users in retrieving information from the provided JSON data.
     Data is about attendance log of the student of my class. My class means that I am a lecturer.
+    Distinct a student by using student_id. Count an attendance for each student distinctly.
+    Student name with the most row of data log, got the highest attendance performance.
+    You determine a class is unique based on class_id. Do not write class_id in answers.
     Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
     Your goal is to provide accurate answers based on the context of the data, including partial name matching and identifying students with high attendance.
 
@@ -79,7 +88,7 @@ def get_conversational_chain():
     Answer:
     """
 
-    model = ChatGoogleGenerativeAI(model="gemini-1.5-pro",
+    model = ChatGoogleGenerativeAI(model="gemini-1.5-flash",
                                    client=genai,
                                    temperature=0.1,
                                    top_k=10)
