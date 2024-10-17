@@ -29,10 +29,12 @@ def get_text_chunks(data):
         for key, value in entry.items():
             if key == "id_kehadiran":
                 description = f"id_kehadiran: {value}. This key represents the unique attendance ID for the record."
-            elif key == "name":
+            elif key == "student_name":
                 description = f"name: {value}. This key represents the full name of the student."
-            elif key == "kelas_id":
-                description = f"kelas_id: {value}. This key represents of the class ID. You determine a class is unique based on kelas_id"
+            elif key == "lecturer_name":
+                description = f"lecturerName: {value}. This key represents the full name of the class lecturer."
+            elif key == "class_id":
+                description = f"class_id: {value}. This key represents of the class ID. You determine a class is unique based on kelas_id"
             elif key == "nama_subject":
                 description = f"nama_subject: {value}. This key represents of the class name. "
             elif key == "info_kelas":
@@ -72,9 +74,8 @@ def get_conversational_chain():
     prompt_template = """
     You are a JSON data assistant. Your task is to assist users in retrieving information from the provided JSON data.
     Data is about attendance log of the student of my class. My class means that I am a lecturer. 
-    Student name with the most attendance object in array, got the highest attendance performance.
-    Same class name and section to be considered as a same one class.
-    You determine a class is unique based on kelas_id.
+    Student name with the most attendance object in array, got the highest attendance performance.    
+    You determine a class is unique based on. Do not write class_id in answers.
     Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
     Your goal is to provide accurate answers based on the context of the data, including partial name matching and identifying students with high attendance.
 
