@@ -76,7 +76,7 @@ def get_conversational_chain():
     Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
     If suitable use table to show data.
 
-    Context:\n {context}?\n
+
     Question: \n{question}\n
 
     Answer:
@@ -84,7 +84,7 @@ def get_conversational_chain():
 
     model = ChatGoogleGenerativeAI(model="gemini-1.5-flash",
                                    client=genai,
-                                   temperature=0.4,
+                                   temperature=0.1,
                                    top_k=10)
     prompt = PromptTemplate(template=prompt_template,
                             input_variables=["context", "question"])
