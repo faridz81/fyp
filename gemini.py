@@ -31,6 +31,8 @@ def get_text_chunks(data):
                 description = f"id_kehadiran: {value}. This key represents the unique attendance ID for the record."
             elif key == "name":
                 description = f"name: {value}. This key represents the full name of the student."
+            elif key == "kelas_id":
+                description = f"kelas_id: {value}. This key represents of the class ID. You determine a class is unique based on kelas_id"
             elif key == "nama_subject":
                 description = f"nama_subject: {value}. This key represents of the class name. "
             elif key == "info_kelas":
@@ -72,7 +74,7 @@ def get_conversational_chain():
     Data is about attendance log of the student of my class. My class means that I am a lecturer. 
     Student name with the most attendance object in array, got the highest attendance performance.
     Same class name and section to be considered as a same one class.
-    You determine a class is unique based on the combination of 'nama_subject'(class name) and 'info_kelas'(class section). Even though some classes share the same name, the different section make them distict.
+    You determine a class is unique based on kelas_id.
     Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
     Your goal is to provide accurate answers based on the context of the data, including partial name matching and identifying students with high attendance.
 
@@ -134,6 +136,7 @@ def main():
         st.error("Sila berikan maklumat pensyarah")
 
     st.title("Smart Attendance AI Assistant")
+    st.write("Welcome to the chat!")
 
     if "messages" not in st.session_state.keys():
         st.session_state.messages = [
