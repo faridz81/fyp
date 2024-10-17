@@ -134,7 +134,6 @@ def main():
         st.error("Sila berikan maklumat pensyarah")
 
     st.title("Smart Attendance AI Assistant")
-    st.write("Welcome to the chat!")
 
     if "messages" not in st.session_state.keys():
         st.session_state.messages = [
