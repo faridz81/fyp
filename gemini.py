@@ -36,7 +36,7 @@ def get_text_chunks(data):
         chunk_size=5000, chunk_overlap=500)
     chunks = splitter.split_text(text)
     
-    return chunks
+    return text
 
 # Get embeddings for each chunk
 def get_vector_store(chunks):
