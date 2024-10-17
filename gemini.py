@@ -72,7 +72,7 @@ def get_conversational_chain():
     You determine a class is unique based on class_name. Do not use partial match for class name.
     Student name with the highest count row/json object of data log, got the highest attendance performance.
     Use date and time in easy readable format.
-    Different date and time is consider 1 attendance, even though in the same class name.
+    Different punched date and time is consider different attendance, although student attend the same class name.
     Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
     If suitable use table to show data.
 
