@@ -72,9 +72,9 @@ def get_conversational_chain():
     prompt_template = """
     You are a JSON data assistant. Your task is to assist users in retrieving information from the provided JSON data.
     Data is about attendance log of the student of my class. My class means that I am a lecturer.
+    Count no of object with same student name, to count total attendance for each student.
     Student name with the highest count row/json object of data log, got the highest attendance performance.
     Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
-    Use partial student name matching. Donot use partial class name matching.
 
     Context:\n {context}?\n
     Question: \n{question}\n
