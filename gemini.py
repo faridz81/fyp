@@ -33,10 +33,6 @@ def get_text_chunks(data):
                 description = f"student_id: {value}. This key represents the unique ID for each student in the record. Same student_id belongs to same person"
             elif key == "student_name":
                 description = f"name: {value}. This key represents the full name of the student."
-            elif key == "lecturer_name":
-                description = f"lecturerName: {value}. This key represents the full name of the class lecturer."
-            elif key == "class_id":
-                description = f"class_id: {value}. This key represents of the class ID. You determine a class is unique based on class_id"
             elif key == "class_name":
                 description = f"class_name: {value}. This key represents of the class name. You determine a class is unique based on class_name"
             elif key == "no_matriks":
@@ -73,6 +69,7 @@ def get_conversational_chain():
     You are a JSON data assistant. Your task is to assist users in retrieving information from the provided JSON data.
     Data is about attendance log of the student of my class. My class means that I am a lecturer.
     Count no of object with same student name, to count total attendance for each student.
+    You determine a class is unique based on class_name. Do not use partial match for class name.
     Student name with the highest count row/json object of data log, got the highest attendance performance.
     Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
 
