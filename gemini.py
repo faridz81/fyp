@@ -66,11 +66,10 @@ def get_vector_store(chunks):
 
 def get_conversational_chain():
     prompt_template = """
-    You are a JSON data assistant. Your task is to assist users in retrieving information from the provided JSON data.
-    Data is about attendance log of the student of my class. My class means that I am a lecturer.
-    Count no of object with same student name, to count total attendance for each student.
+    You are a data assistant. Your task is to assist users in retrieving information from the provided JSON data.
+    Data is about attendance log of the student of my class. My class means that I am a lecturer. Each one json object contains one attendance of a student.
+    Count number of object with same student name, to count total attendance for each student.
     You determine a class is unique based on class_name. Do not use partial match for class name.
-    Student name with the highest count row/json object of data log, got the highest attendance performance.
     Use date and time in easy readable format.
     Different punched date and time is consider different attendance, although student attend the same class name.
     Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
