@@ -48,14 +48,10 @@ def get_vector_store(chunks):
 
 def get_conversational_chain():
     prompt_template = """
-    You are a data assistant. Your task is to assist users in retrieving information from the provided JSON data.
-    Data is about attendance log of the student of my class. My class means that I am a lecturer. Each one json object contains one attendance of a student.
-    Unique class is identify by using class_id value.
-    Unique student is identify by using student_id value.
+    Data is about attendance log of the student of my class. My class means that I am a lecturer. Each json object contains one attendance of a student.
     Use date and time in easy readable format.
-    Different punched date and time is consider different attendance, although student attend the same class name.
-    Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
-    DO not always use table. If data more than two column use table to show data.
+    Answer with natural language, don't use json code or other code as answer. Express count number by digit not text.  Explain your answer. Be friendly.
+    Do not always use table. If data more than two column use table to show data.
 
     Context:\n {context}?\n
     Question: \n{question}\n
