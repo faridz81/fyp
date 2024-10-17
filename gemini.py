@@ -39,8 +39,6 @@ def get_text_chunks(data):
                 description = f"class_id: {value}. This key represents of the class ID. You determine a class is unique based on class_id"
             elif key == "class_name":
                 description = f"class_name: {value}. This key represents of the class name. "
-            elif key == "info_kelas":
-                description = f"info_kelas: {value}. This key represents the class section."
             elif key == "no_matriks":
                 description = f"no_matriks: {value}. This key represents the student's matriculation number."
             elif key == "nama_fakulti":
@@ -51,8 +49,6 @@ def get_text_chunks(data):
                 description = f"register_time: {value}. This key represents the date and time when the student punched their attendance."
             elif key == "lokasi_device":
                 description = f"lokasi_device: {value}. This key represents the location of the device used to register the attendance."
-            else:
-                description = f"{key}: {value}."
             
             text += description + "\n"
     
