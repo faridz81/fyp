@@ -42,7 +42,7 @@ def get_text_chunks(data):
             elif key == "nama_course":
                 description = f"nama_course: {value}. This key represents the name of the course the student is taking."
             elif key == "register_time":
-                description = f"register_time: {value}. This key represents the date and time when the student punched their attendance."
+                description = f"register_time: {value}. This key represents the date and time when the student punched their attendance with timezone Asia/Kuala Lumpur (GMT +8)."
             elif key == "lokasi_device":
                 description = f"lokasi_device: {value}. This key represents the location of the device used to register the attendance."
             
