@@ -53,7 +53,7 @@ def get_conversational_chain():
     Use date and time in easy readable format.
     Different punched date and time is consider different attendance, although student attend the same class name.
     Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
-    DO not always use table. If data more than two column use table to show data, if not use bullet.
+    DO not always use table. If data more than two column use table to show data.
 
     Context:\n {context}?\n
     Question: \n{question}\n
