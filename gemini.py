@@ -34,7 +34,7 @@ def get_text_chunks(data):
     splitter = RecursiveCharacterTextSplitter(
         separators=['\n'],
         chunk_size=5000, chunk_overlap=500)
-    chunks = splitter.split_text(data)
+    chunks = splitter.split_text(text)
     
     return chunks
 
