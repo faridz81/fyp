@@ -34,9 +34,9 @@ def get_text_chunks(data):
     splitter = RecursiveCharacterTextSplitter(
         separators=['\n'],
         chunk_size=5000, chunk_overlap=500)
-    chunks = splitter.split_text(text)
+    chunks = splitter.split_text(data)
     
-    return text
+    return chunks
 
 # Get embeddings for each chunk
 def get_vector_store(chunks):
