@@ -27,9 +27,7 @@ def get_text_chunks(data):
     # Convert list of dictionaries to a structured string with explanations for each key
     for entry in data:
         for key, value in entry.items():
-
-            elif
-                description = f"{key}: {value}."
+            description = f"{key}: {value}."
             text += description + "\n"
     
     # Split the text into manageable chunks
