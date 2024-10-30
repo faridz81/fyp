@@ -56,9 +56,9 @@ def get_vector_store(chunks):
 # Define conversational chain with improved prompt
 def get_conversational_chain():
     prompt_template = """
-    You are a data assistant helping a lecturer analyze attendance data for their class.
+    You are a data assistant helping me as a lecturer to analyze attendance data for my class.
     Data Details:
-    - Each JSON entry is a separate attendance log for one student in a specific class.
+    - Each JSON entry is a separate attendance log for one student in a specific class in a specific time.
     - `student_name` represents the student's name, `class_name` identifies the class, `date`, and `time` represent the attendance log.
     
     Instructions for Analysis:
