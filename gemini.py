@@ -14,31 +14,38 @@ from dotenv import load_dotenv
 load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
+# Load and return JSON data
 def read_json_data(json_url):
     response = requests.get(json_url)
     if response.status_code == 200:
-        return response.json()  # Return parsed JSON data
+        return response.json()
     else:
         st.error("Failed to load data from the URL.")
         return []
 
-def get_text_chunks(data):
-    text = ""
-    # Convert list of dictionaries to a structured string with explanations for each key
+# Group data by (student_name, class_name) and provide counts
+def group_data_by_student_class(data):
+    grouped_data = {}
     for entry in data:
-        for key, value in entry.items():
-            description = f"{key}: {value}."
-            text += description + "\n"
+        student_class = (entry['student_name'], entry['class_name'])
+        grouped_data.setdefault(student_class, []).append(entry)
+    return grouped_data
+
+# Convert grouped data to text chunks
+def get_text_chunks(grouped_data):
+    text = ""
+    for (student, class_name), attendances in grouped_data.items():
+        attendance_count = len(attendances)
+        text += f"Student: {student}, Class: {class_name}, Attendances: {attendance_count}\n"
+        for entry in attendances:
+            text += f"Date: {entry['date']}, Time: {entry['time']}\n"
     
-    # Split the text into manageable chunks
     splitter = RecursiveCharacterTextSplitter(
         separators=['\n'],
-        chunk_size=60000, chunk_overlap=5000)
-    chunks = splitter.split_text(text)
-    
-    return chunks
+        chunk_size=2000, chunk_overlap=200)  # Adjusted for better handling
+    return splitter.split_text(text)
 
-# Get embeddings for each chunk
+# Create a vector store with embeddings
 def get_vector_store(chunks):
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/embedding-001"
@@ -46,55 +53,53 @@ def get_vector_store(chunks):
     vector_store = FAISS.from_texts(chunks, embedding=embeddings)
     vector_store.save_local("faiss_index")
 
+# Define conversational chain with improved prompt
 def get_conversational_chain():
     prompt_template = """
-    You are a data assistant. Your task is to assist users in retrieving information from the provided JSON data.
-    Data is about attendance log of the student of my class. My class means that I am a lecturer. Each one json object contains one attendance of a student.
-    Use date and time in easy readable format.
-    Different punched date and time is consider different attendance, although student attend the same class name.
-    Answer with natural language, don't use json code or other code as answer. Answer in Malay if question in Malay. Answer in English if Question in English. Express count number by digit not text.  Explain your answer. Be friendly.
-    DO not always use table. If data more than two column use table to show data.
+    You are a data assistant helping a lecturer analyze attendance data for their class.
+    Data Details:
+    - Each JSON entry is a separate attendance log for one student in a specific class.
+    - `student_name` represents the student's name, `class_name` identifies the class, `date`, and `time` represent the attendance log.
+    
+    Instructions for Analysis:
+    - When counting attendance, use exact matches for `student_name` and `class_name`.
+    - Each unique date and time entry for the same `class_name` counts as a separate attendance, even if it's for the same student.
+    - Express counts as digits (e.g., "3" instead of "three") and ensure clarity and accuracy.
+    - Present attendance details in a table format when they contain more than two columns.
+    - Respond in Malay if the question is in Malay, and in English if it is in English.
 
     Context:\n {context}?\n
     Question: \n{question}\n
 
     Answer:
     """
-
-    model = ChatGoogleGenerativeAI(model="gemini-1.5-flash",
-                                   client=genai,
-                                   temperature=0.1,
-                                   top_k=10)
-    prompt = PromptTemplate(template=prompt_template,
-                            input_variables=["context", "question"])
-    chain = load_qa_chain(llm=model, chain_type="stuff", prompt=prompt)
-    return chain
+    model = ChatGoogleGenerativeAI(
+        model="gemini-1.5-flash",
+        client=genai,
+        temperature=0.2,   # Lowered temperature for better accuracy
+        top_k=5            # Adjusted for more relevant responses
+    )
+    prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
+    return load_qa_chain(llm=model, chain_type="stuff", prompt=prompt)
 
 def clear_chat_history():
     st.session_state.messages = [
         {"role": "assistant", "content": "Ask me a question about the attendance data."}]
 
+# Process user input and generate AI response
 def user_input(user_question):
-    embeddings = GoogleGenerativeAIEmbeddings(
-        model="models/embedding-001")
-
-    new_db = FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True) 
-    docs = new_db.similarity_search(user_question, top_k=10)
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    new_db = FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True)
+    docs = new_db.similarity_search(user_question, top_k=5)  # Adjusted top_k for focused results
 
     chain = get_conversational_chain()
-
-    response = chain(
-        {"input_documents": docs, "question": user_question}, return_only_outputs=True)
+    response = chain({"input_documents": docs, "question": user_question}, return_only_outputs=True)
 
     return response
 
+# Streamlit application main function
 def main():
-    st.set_page_config(
-        page_title="Smart Attendance AI Assistant",
-        page_icon="🤖"
-    )
-
-    # Get the lecturer ID from the GET parameter
+    st.set_page_config(page_title="Smart Attendance AI Assistant", page_icon="🤖")
     query_params = st.query_params
     lecturer_id = query_params.get("id", None)
 
@@ -103,20 +108,21 @@ def main():
         
         with st.spinner("Processing..."):
             raw_data = read_json_data(json_url)
-            text_chunks = get_text_chunks(raw_data)
+            grouped_data = group_data_by_student_class(raw_data)
+            text_chunks = get_text_chunks(grouped_data)
             if text_chunks:
                 get_vector_store(text_chunks)
-                st.success("Data pelajar telah diproses")
+                st.success("Student attendance data processed successfully.")
             else:
-                st.warning("Tiada data")
+                st.warning("No data available.")
     else:
-        st.error("Sila berikan maklumat pensyarah")
+        st.error("Please provide lecturer information.")
 
     st.title("Smart Attendance AI Assistant")
 
     if "messages" not in st.session_state.keys():
         st.session_state.messages = [
-            {"role": "assistant", "content": "Sila bertanya berkenaan maklumat kehadiran sahaja."}]
+            {"role": "assistant", "content": "Feel free to ask questions about the attendance data."}]
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
@@ -130,7 +136,7 @@ def main():
     # Display chat messages and bot response
     if st.session_state.messages[-1]["role"] != "assistant":
         with st.chat_message("assistant"):
-            with st.spinner("Sedang Proses..."):
+            with st.spinner("Processing..."):
                 response = user_input(prompt)
                 placeholder = st.empty()
                 full_response = ''
